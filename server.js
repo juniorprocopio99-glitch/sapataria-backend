@@ -1,20 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const { createClient } = require('@supabase/supabase-js');
+const supabase = require('./supabase');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-const supabase = createClient(
-  'COLE_A_URL_DO_SUPABASE',
-  'COLE_A_CHAVE_PUBLICAVEL'
-);
-
-app.get('/', (req, res) => {
-  res.send('API funcionando');
-});
 
 app.get('/produtos', async (req, res) => {
   const { data, error } = await supabase
@@ -28,6 +19,8 @@ app.get('/produtos', async (req, res) => {
   res.json(data);
 });
 
-app.listen(3001, () => {
-  console.log('Servidor online');
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(`Servidor online na porta ${PORT}`);
 });
